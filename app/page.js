@@ -17,13 +17,13 @@ export default function Home() {
     <>
       <Header />
       <main>
-        <HeroOrb />
         {/* Desktop: hero + strip fill one screen. The hero scrolls away normally while
             the strip stays pinned at the bottom of the screen, and the next section
             slides up over it like a sheet. Phones scroll normally. */}
         <Hero />
 
         <CoverSheet>
+          <HeroOrb />
           <Services />
           <WhyUs />
           <Work />

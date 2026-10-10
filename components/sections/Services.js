@@ -57,15 +57,15 @@ function ServiceCard({ service, item, i, t }) {
       style={{
         transform: tilt.isHovered
           ? `perspective(1000px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateY(-8px)`
-          : "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)",
+          : "none",
         transition: tilt.isHovered
           ? "transform 0.12s ease-out, box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.38s cubic-bezier(0.16, 1, 0.3, 1)"
           : "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.38s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className={`group relative flex flex-col overflow-hidden border-2 border-transparent transition-all duration-[380ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] hover:border-brand-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 ${
+      className={`group relative z-30 flex flex-col transition-all duration-[380ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] hover:border-brand-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 ${
         site.showInfinity 
-          ? "bg-white/[0.04] p-6 xl:p-8 text-center hover:shadow-[0_22px_50px_rgba(57,105,159,0.20)] aspect-square w-[min(280px,100%)] shrink-0 lg:w-[var(--service-size)] rounded-full items-center justify-center" 
-          : "h-full bg-[#141A28] p-8 hover:shadow-[0_22px_50px_rgba(57,105,159,0.16)] rounded-[22px]"
+          ? "border-2 border-transparent bg-white/[0.04] p-6 xl:p-8 text-center hover:shadow-[0_22px_50px_rgba(57,105,159,0.20)] aspect-square w-[min(280px,100%)] shrink-0 lg:w-[var(--service-size)] rounded-full items-center justify-center overflow-hidden" 
+          : "border border-white/20 bg-[#050a0e]/40 backdrop-blur-md p-6 sm:p-8 hover:shadow-[0_22px_50px_rgba(57,105,159,0.20)] aspect-square w-[min(320px,100%)] mx-auto rounded-full items-center justify-center text-center overflow-hidden"
       }`}
     >
       {/* Dotted spotlight */}
@@ -90,20 +90,20 @@ function ServiceCard({ service, item, i, t }) {
         aria-hidden="true"
       />
 
-      <div className={`relative z-10 flex flex-col h-full pointer-events-none ${site.showInfinity ? "items-center justify-center" : ""}`}>
+      <div className={`relative z-10 flex flex-col h-full pointer-events-none items-center justify-center`}>
         <div className={`flex shrink-0 items-center justify-center rounded-[18px] bg-gradient-to-br ${theme.gradient} ${theme.glow} ${theme.hoverGlow} text-white transition-all duration-350 ease-out group-hover:scale-110 group-hover:rotate-6 ${
-          site.showInfinity ? "h-[48px] w-[48px] xl:h-[56px] xl:w-[56px]" : "h-[62px] w-[62px]"
+          site.showInfinity ? "h-[48px] w-[48px] xl:h-[56px] xl:w-[56px]" : "h-[56px] w-[56px]"
         }`}>
           <Icon name={service.icon} className={`text-white ${site.showInfinity ? "h-6 w-6" : "h-7 w-7"}`} />
         </div>
         <h3 className={`font-display font-bold text-white group-hover:text-[#4ADE80] transition-colors leading-tight ${
-          site.showInfinity ? "mt-3.5 text-base sm:text-lg" : "mt-6 text-xl"
+          site.showInfinity ? "mt-3.5 text-base sm:text-lg" : "mt-4 text-lg sm:text-xl"
         }`}>{item.title}</h3>
-        <p className={`text-slate-300 leading-relaxed ${
-          site.showInfinity ? "mt-2 text-[11px] sm:text-xs max-w-[85%] mx-auto line-clamp-3" : "mt-3 flex-1 text-base"
+        <p className={`text-slate-300 leading-relaxed max-w-[90%] mx-auto ${
+          site.showInfinity ? "mt-2 text-[11px] sm:text-xs line-clamp-3" : "mt-2 text-xs sm:text-sm line-clamp-3"
         }`}>{item.summary}</p>
-        <span className={`inline-flex items-center gap-1.5 font-bold text-[#4ADE80] transition-all duration-200 ease-out group-hover:gap-2.5 group-hover:text-white ${
-          site.showInfinity ? "mt-3 text-xs justify-center" : "mt-6 text-sm"
+        <span className={`inline-flex items-center gap-1.5 font-bold text-[#4ADE80] transition-all duration-200 ease-out group-hover:gap-2.5 group-hover:text-white mt-3 justify-center ${
+          site.showInfinity ? "text-xs" : "text-sm"
         }`}>
           <span>{t.serviceDetail.viewDetails}</span>
           <Icon name="arrow" className={`transition-transform duration-200 ease-out group-hover:translate-x-1 ${
@@ -122,7 +122,7 @@ export function Services() {
   // One ref per card to measure center positions
 
   return (
-    <section id="services" className="py-10 sm:py-16 lg:py-20 overflow-hidden">
+    <section id="services" className="relative z-30 py-10 sm:py-16 lg:py-20 overflow-hidden">
       <div className="mx-auto max-w-[1560px] px-4 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={s.eyebrow} title={s.title} subtitle={s.subtitle} />
 
@@ -184,7 +184,7 @@ export function Services() {
             </>
           ) : (
             /* Standard Grid Layout when Infinity is disabled */
-            <div data-molecule-cards className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 pb-4">
+            <div data-molecule-cards className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 pt-8 pb-4 max-w-5xl mx-auto">
               {services.map((service, i) => {
                 const item = service[lang];
                 return (

@@ -326,27 +326,25 @@ export default function HeroOrb() {
              }
           }
         } else {
-          // Uniformly scattered across the whole screen without any patterns
-          const spanX = W * 1.6 * worldPerPixel;
-          const spanY = Math.max(H * 1.5, sr.height * 1.5) * worldPerPixel;
+          // Particles scatter outwards and vanish (fly away)
+          const spanX = W * 2.5 * worldPerPixel; // wider spread
+          const spanY = Math.max(H * 2.5, sr.height * 2.5) * worldPerPixel;
           
           // True uniform pseudo-random distribution using modulo
           const randX = ((u * 1234.5678) % 1.0) - 0.5;
           const randY = ((v * 8765.4321) % 1.0) - 0.5;
           const randZ = (((u + v) * 5432.1098) % 1.0) - 0.5;
           
-          // Very slow, gentle ambient drifting
-          // Organic floating movement so it's not static
+          // Drift movement
           const driftX = Math.sin(t * 0.4 + u * 3) * 6 * worldPerPixel;
           const driftY = Math.cos(t * 0.35 + v * 3) * 6 * worldPerPixel;
           
           ix = randX * spanX + driftX;
           iy = (H / 2 - sr.top - sr.height / 2) * worldPerPixel + randY * spanY + driftY;
-          iz = randZ * 10 * worldPerPixel;
+          iz = (randZ * 30 + 15) * worldPerPixel; // fly towards the camera
           
-          // Make them glow brightly (Additive Blending will make values > 1 look like bright neon)
-          destinationBrightness = 1.5 + 0.8 * Math.sin(u * 10 + t * 0.8);
-          targetAlpha = 1.0; 
+          destinationBrightness = 0.8;
+          targetAlpha = -0.2; // push below 0 so they fully vanish before scroll ends
         }
         // The bridges emerge just after the infinity begins to form.
         const local = ribbonParticle && segments.length
@@ -396,7 +394,7 @@ export default function HeroOrb() {
           const weaveBrightness = i % 11 === 0 ? 0.28 * (1 - frameworkOpen * 0.65) : 0;
           brightness += (weaveBrightness - brightness) * transfer;
         }
-        color.setW(i, 1 + (targetAlpha - 1) * particleBlend);
+        color.setW(i, Math.max(0, 1 + (targetAlpha - 1) * particleBlend));
         color.setXYZ(i, baseColors[i * 4] * brightness, baseColors[i * 4 + 1] * brightness, baseColors[i * 4 + 2] * brightness);
       }
       pos.needsUpdate = true;
